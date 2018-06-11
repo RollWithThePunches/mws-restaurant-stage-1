@@ -109,7 +109,7 @@ nav h1 a {
 }
 
 #breadcrumb {
-  margin: 0;
+  margin: 37px 0 0 0;
   padding: 10px 40px 16px;
   width: calc(50% - 80px);
   background: #eee;
@@ -271,7 +271,7 @@ nav h1 a {
   display: grid;
   grid-template-columns: 500px;
   grid-template-rows: 800px auto;
-  justify-content: right;
+  justify-content: center;
 }
 
 #restaurant-name {
@@ -305,10 +305,6 @@ nav h1 a {
   text-transform: uppercase;
 }
 
-#address{
- margin: 20px 0 0 0;
-}
-
 #restaurant-container,
 #reviews-container {
   padding: 100px 40px 30px;
@@ -337,7 +333,7 @@ nav h1 a {
 
 #reviews-list li {
   margin: 0 0 30px;
-  width: 85%;
+  width: 100%;
   background: #fff;
   border-top-left-radius: 20px;
   border-bottom-right-radius: 20px;
@@ -395,7 +391,7 @@ nav h1 a {
 
     /* ====================== Navigation ====================== */
     #breadcrumb {
-  	  margin: 0;
+  	  margin: 25px 0 0 0;
   	  width: 100%;
   	}
 
@@ -514,8 +510,9 @@ nav h1 a {
 
   	/* ====================== Navigation Mobile Size ====================== */
   	#breadcrumb {
-  	  margin: 0;
+  	  margin: 40px 0 0 0;
   	  width: 100%;
+      text-align: left;
   	}
 
   	/* ====================== Map Mobile Size ====================== */
@@ -591,6 +588,15 @@ nav h1 a {
 
     #restaurant-hours td {
       font-size: 0.85em;
+    }
+
+}
+
+/* ====================== Media max 399px ====================== */
+@media screen and (max-width: 401px) {
+
+      #breadcrumb {
+      margin: 20px 0 0 0;
     }
 
 }
