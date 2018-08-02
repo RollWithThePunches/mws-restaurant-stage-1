@@ -4,7 +4,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#444444">
+  <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ==" crossorigin=""/>
   <title>Restaurant Info</title>
 </head>
 
@@ -23,15 +26,11 @@
 
   <!-- Main -->
   <main id="maincontent-details" role="main">
-    <!-- Map -->
-    <section id="map-container">
-      <div id="map" role="map" aria-label="Map"></div>
-    </section>
     <!-- Restaurant details -->
     <section id="details">
       <div id="restaurant-container">
-        <h2 id="restaurant-name"></h2>
         <img id="restaurant-img">
+        <h2 id="restaurant-name"></h2>
         <p id="restaurant-cuisine"></p>
         <p id="restaurant-address"></p>
         <table id="restaurant-hours"></table>
@@ -41,6 +40,10 @@
         <ul id="reviews-list"></ul>
       </div>
     </section>
+        <!-- Map -->
+    <section id="map-container">
+      <div id="map" role="map" aria-label="Map"></div>
+    </section>
   </main>
 
   <!-- Footer -->
@@ -49,11 +52,14 @@
   </footer>
 
   <!-- Scripts -->
+  <script src="js/idb.js"></script>
+    <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js" integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw==" crossorigin=""></script>
+
+  <script src="js/idb.js"></script>
+  <script src="js/lazysizes.min.js" async=""></script>
   <script src="js/dbhelper.js"></script>
   <script src="js/restaurant_info.js"></script>
   <link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css">
-  <!-- Google Maps -->
-  <script async defer src="https://maps.googleapis.com/maps/api/js?libraries=places&callback=initMap"></script>
 
 </body>
 

@@ -8,33 +8,40 @@ class DBHelper {
    * Change this to restaurants.json file location on your server.
    */
   static get DATABASE_URL() {
-    const port = 8000 // Change this to your server port
-    return `http://localhost:${port}/data/restaurants.json`;
+    const port = 1337;
+    return `http://localhost:${port}/restaurants`;
+
   }
 
-  /**
-   * Fetch all restaurants.
-   */
   static fetchRestaurants(callback) {
-    let xhr = new XMLHttpRequest();
-    xhr.open('GET', DBHelper.DATABASE_URL);
-    xhr.onload = () => {
-      if (xhr.status === 200) { // Got a success response from server!
-        const json = JSON.parse(xhr.responseText);
-        const restaurants = json.restaurants;
-        callback(null, restaurants);
-      } else { // Oops!. Got an error from server.
-        const error = (`Request failed. Returned status of ${xhr.status}`);
-        callback(error, null);
-      }
-    };
-    xhr.send();
-  }
 
+      fetch(DBHelper.DATABASE_URL).then((response) => {
+        response.json()
+          .then((restaurants) => {
+
+            const dbPromise = idb.open('restaurants-db', 5, (upgradeDb) => {
+              upgradeDb.createObjectStore('restaurants', { keyPath: 'id' });
+            });
+
+              dbPromise.then((db) => {
+                const tx = db.transaction('restaurants', 'readwrite');
+                const restaurantsStore = tx.objectStore('restaurants');
+                restaurants.forEach((restaurant) => {
+                  restaurantsStore.put(restaurant);
+                });
+              });
+
+          console.log('restaurants json', restaurants);
+          callback(null, restaurants);
+
+        }).catch((error) => { console.log(error); });
+      });
+  }
   /**
    * Fetch a restaurant by its ID.
    */
   static fetchRestaurantById(id, callback) {
+
     // fetch all restaurants with proper error handling.
     DBHelper.fetchRestaurants((error, restaurants) => {
       if (error) {
@@ -150,21 +157,20 @@ class DBHelper {
    * Restaurant image URL.
    */
   static imageUrlForRestaurant(restaurant) {
-    return (`/img/${restaurant.photograph}`);
+    return (`/img/${restaurant.photograph}.jpg`);
   }
 
 
   /**
    * Map marker for a restaurant.
    */
-  static mapMarkerForRestaurant(restaurant, map) {
-    const marker = new google.maps.Marker({
-      position: restaurant.latlng,
-      title: restaurant.name,
-      url: DBHelper.urlForRestaurant(restaurant),
-      map: map,
-      animation: google.maps.Animation.DROP}
-    );
+   static mapMarkerForRestaurant(restaurant, map) {
+    const marker = new L.marker([restaurant.latlng.lat, restaurant.latlng.lng],
+      {title: restaurant.name,
+      alt: restaurant.name,
+      url: DBHelper.urlForRestaurant(restaurant)
+      })
+      marker.addTo(newMap);
     return marker;
   }
 

@@ -1,7 +1,8 @@
+
 //service worker install
-self.addEventListener('install', function (event) {
+self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open('restaurants-cache').then(function (cache) {
+    caches.open('restaurants-cache').then((cache) => {
       return cache.addAll([
         '/',
         '/index.html',
@@ -10,7 +11,7 @@ self.addEventListener('install', function (event) {
         '/js/restaurant_info.js',
         '/js/dbhelper.js',
         '/css/styles.css',
-        '/data/restaurants.json',
+        //'/data/restaurants.json',
         '/img'
       ])
     })
@@ -18,13 +19,13 @@ self.addEventListener('install', function (event) {
 });
 
 
-self.addEventListener('fetch', function (event) {
+self.addEventListener('fetch', (event) => {
   console.log(event.request.url);
 
   event.respondWith(
-    caches.match(event.request).then(function (response) {
-      return response || fetch(event.request).then(function (response) {
-        return caches.open('restaurants-cache').then(function (cache) {
+    caches.match(event.request).then((response) => {
+      return response || fetch(event.request).then((response) => {
+        return caches.open('restaurants-cache').then((cache) => {
           cache.put(event.request, response.clone());
           return response;
         });
