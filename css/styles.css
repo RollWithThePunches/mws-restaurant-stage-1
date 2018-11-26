@@ -56,6 +56,11 @@ li {
   display: block;
 }
 
+input,
+textarea {
+  padding: 10px;
+  font-size: 1em;
+}
 
 #maincontent {
   min-height: 100%;
@@ -203,16 +208,33 @@ nav h1 a {
   -moz-box-shadow: 0 0 10px #d1d1d1;
 }
 
-#restaurants-list li h2 {
+.name-div {
   margin: 0 0 15px 0;
   padding: 10px 10px 15px;
-  background: #fff;
+  width: 94%;
+  border-bottom: 1px solid #d9d9d9;
+  text-align: left;
+}
+
+#restaurants-list li h2 {
+  margin: 0;
+  padding: 0;
+  width: 87%;
   color: #d61322;
   font-size: 1.1em;
   font-weight: 700;
   line-height: 1.3;
   text-transform: uppercase;
-  border-bottom: 1px solid #d9d9d9;
+  display: inline-block;
+}
+
+.fav-star {
+  margin: 0;
+  padding: 0;
+  width: 5%;
+  font-size: 1.2em;
+  text-align: right;
+  display: inline-block;
 }
 
 #restaurants-list p {
@@ -321,7 +343,7 @@ nav h1 a {
 }
 
 #reviews-container {
-  padding: 30px 0 80px;
+  padding: 30px 0 10px;
   width: 450px;
 }
 
@@ -376,6 +398,47 @@ nav h1 a {
 #restaurant-hours {
   margin: 0 20px;
   color: #666;
+}
+
+#reviews-form {
+  padding: 20px 20px 30px;
+}
+
+.reviews-input-name {
+  width: 60%;
+  height: 25px;
+}
+
+.reviews-input-rating {
+  width: 20%;
+  height: 25px;
+}
+
+.reviews-input-comments {
+  margin-top: 20px;
+  width: 94%;
+  height: auto;
+  border: 1px solid #ccc;
+  resize: none;
+}
+
+.reviews-submit {
+  padding: 10px;
+  width: 150px;
+  height: 40px;
+  background: #44afb7;
+  font-size: 0.8em;
+  color: #fff;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  float: right;
+  border: none;
+}
+
+.reviews-submit:hover {
+  background: #d61322;
 }
 
 /* ====================== Media min 600px max 999px ====================== */

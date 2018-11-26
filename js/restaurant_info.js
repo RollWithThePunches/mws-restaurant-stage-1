@@ -61,6 +61,39 @@ fetchRestaurantFromURL = (callback) => {
  * Create restaurant HTML and add it to the webpage
  */
 fillRestaurantHTML = (restaurant = self.restaurant) => {
+  // const div = document.getElementById('reviews-form');
+  // const likeClicked = (restaurant['is_favorite'] && restaurant['is_favorite'].toString() === 'true')
+  //   ? true : false;
+
+  // reviewH2 = document.createElement('h2');
+  // reviewH2.innerHTML = 'Share your review';
+  // div.append(reviewH2);
+
+  // const reviewForm = document.createElement('form');
+  // div.append(reviewForm);
+  // reviewForm.className = 'star-div';
+  
+  // const inputName = document.createElement('input');
+  // inputName.className = 'reviews-input-name';
+  // inputName.setAttribute('value', 'Your Name');
+
+  // const likeButton = document.createElement('button');
+  // likeButton.innerHTML = likeClicked ? '&#9734' : '&#9733';
+  // likeButton.className = 'star-icon';
+  // likebutton.onclick = event => handleLikeClick(restaurant.id, !likeClicked);
+
+  // const textareaComment = document.createElement('textarea');
+  // textareaComment.className = 'reviews-input-comments';
+  // textareaComment.setAttribute('rows', 15);
+
+  // const submitButton = document.createElement('button');
+  // submitButton.ckassName = 'submit-button';
+  // submitButton.innerHTML = 'Submit';
+  // reviewForm.append(inputName, likeButton, textareaComment, submitButton);
+
+
+
+
   const name = document.getElementById('restaurant-name');
   name.innerHTML = restaurant.name;
 
@@ -82,7 +115,7 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
     fillRestaurantHoursHTML();
   }
   // fill reviews
-  fillReviewsHTML();
+  DBHelper.fetchRestaurantReviews(restaurant.id).then(fillReviewsHTML);
 }
 
 /**
@@ -127,6 +160,33 @@ fillReviewsHTML = (reviews = self.restaurant.reviews) => {
   container.appendChild(ul);
 }
 
+const saveReview = () => {
+  // Get the data points for the review
+  const name = document
+    .getElementById("reviewName")
+    .value;
+  const rating = document
+    .getElementById("reviewRating")
+    .value - 0;
+  const comment = document
+    .getElementById("reviewComment")
+    .value;
+
+  console.log("reviewName: ", name); 
+}
+
+  // DBHelper.saveReview(self.restaurant.id, name, rating, comment, (error, review) => {
+  //   console.log("got saveReview callback");
+  //   if (error) {
+  //     console.log("Error saving review")
+  //   }
+  //   // Update the button onclick event
+  //   const btn = document.getElementById("btnSaveReview");
+  //   btn.onclick = event => saveReview();
+
+  //   window.location.href = "/restaurant.html?id=" + self.restaurant.id;
+  // });
+
 /**
  * Create review HTML and add it to the webpage.
  */
@@ -135,7 +195,7 @@ createReviewHTML = (review) => {
   const name = document.createElement('p');
   name.innerHTML = review.name;
   const date = document.createElement('p');
-  date.innerHTML = `<span class="review-date">${review.date}</span>`;
+  date.innerHTML = `<span class="review-date">${ new Date(review.createdAt).toLocaleDateString() }</span>`;
   name.innerHTML += date.innerHTML;
   li.setAttribute('aria-label', 'Review by ' + review.name);
   li.appendChild(name);
@@ -178,17 +238,25 @@ getParameterByName = (name, url) => {
   return decodeURIComponent(results[2].replace(/\+/g, ' '));
 }
 
+const handleLikeClick = (id, newState) => {
+  // Update properties of the restaurant data object
+  const favorite = document.getElementById("favorite-icon-" + id);
+  self.restaurant["is_favorite"] = newState;
+  favorite.onclick = event => handleLikeClick(restaurant.id, !self.restaurant["is_favorite"]);
+  DBHelper.handleLikeClick(id, newState);
+};
+
 /**
  * Service worker registration.
  */
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js').then((registration) => {
-      // Registration was successful
-      console.log('ServiceWorker registration successful with scope again: ', registration.scope);
-    }, function(err) {
-      // registration failed :(
-      console.log('ServiceWorker registration failed: ', err);
-    });
-  });
-}
+// if ('serviceWorker' in navigator) {
+//   window.addEventListener('load', () => {
+//     navigator.serviceWorker.register('/sw.js').then((registration) => {
+//       // Registration was successful
+//       console.log('ServiceWorker registration successful with scope again: ', registration.scope);
+//     }, function(err) {
+//       // registration failed :(
+//       console.log('ServiceWorker registration failed: ', err);
+//     });
+//   });
+// }

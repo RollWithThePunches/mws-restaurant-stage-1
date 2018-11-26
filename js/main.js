@@ -1,7 +1,8 @@
 
 let restaurants,
     neighborhoods,
-    cuisines;
+    cuisines,
+    favStar;
 var newMap;
 const markers = [];
 
@@ -151,9 +152,22 @@ createRestaurantHTML = (restaurant) => {
   //image.src = DBHelper.imageUrlForRestaurant(restaurant);
   li.append(image);
 
+  const nameDiv = document.createElement('div');
+  nameDiv.className = 'name-div';
+  li.append(nameDiv);
+
   const name = document.createElement('h2');
   name.innerHTML = restaurant.name;
-  li.append(name);
+  nameDiv.append(name);
+
+  console.log('is_favorite: ', restaurant['is_favorite']);
+  const likeClicked = (restaurant['is_favorite'] && restaurant['is_favorite'].toString() === 'true') ? true : false;
+  const likeButton = document.createElement('button');
+  likeButton.innerHTML = likeClicked ? '&#9734' : '&#9733';
+  likeButton.className = 'star-icon';
+  likeButton.id = 'fav-star-' + restaurant.id;
+  likeButton.onclick = event => handleLikeClick(restaurant.id, !likeClicked);
+  nameDiv.append(likeButton);
 
   const neighborhood = document.createElement('p');
   neighborhood.innerHTML = restaurant.neighborhood;
@@ -171,6 +185,17 @@ createRestaurantHTML = (restaurant) => {
 
   return li;
 }
+
+const handleLikeClick = (id, newState) => {
+  // Update properties of the restaurant data object
+  const likeButton = document.getElementById('fav-star-' + id);
+  const restaurant = self.restaurants.filter(r => r.id === id)[0];
+  if (!restaurant)
+    return;
+  restaurant["is_favorite"] = newState;
+  likeButton.onclick = event => handleLikeClick(restaurant.id, !restaurant['is_favorite']);
+  DBHelper.handleLikeClick(id, newState);
+};
 
 /**
  * Add markers for current restaurants to the map.
@@ -190,14 +215,14 @@ addMarkersToMap = (restaurants = self.restaurants) => {
 /**
  * Service worker registration.
  */
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js').then((registration) => {
-      // Registration was successful
-      console.log('ServiceWorker registration successful with scope again: ', registration.scope);
-    }, function(err) {
-      // registration failed :(
-      console.log('ServiceWorker registration failed: ', err);
-    });
-  });
-}
+// if ('serviceWorker' in navigator) {
+//   window.addEventListener('load', () => {
+//     navigator.serviceWorker.register('/sw.js').then((registration) => {
+//       // Registration was successful
+//       console.log('ServiceWorker registration successful with scope again: ', registration.scope);
+//     }, function(err) {
+//       // registration failed :(
+//       console.log('ServiceWorker registration failed: ', err);
+//     });
+//   });
+// }
